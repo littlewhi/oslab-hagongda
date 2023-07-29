@@ -1,0 +1,8 @@
+The CPU management method is mult-processes also called concurrent which mean one cpu alternately runs processes by one special way which makes it seems to run many processes at one time.
+The process has many different status to describe it, as NEW(N),READY(J),RUNNING(R),WAIT(W),EXIT(E) and so on. These five statuses are the most basic condition.
+A executable file is started to be as a NEW process, and then come to J status which is in the queue of J processes. When it begins to run it becomes R status. If someone or system or itself gives the signal of wait, it will become W status.
+E status is when one dynamic process becomes a static executable file or code. At the end of exiting, the process will sent an exit code to its father process.
+The organization is PCB(Process Control Block), Status and Queue. The actual process is Opreation of Queue, Scheculing and Switching.
+
+
+Note : printing R status needs to go before switch_to(next).

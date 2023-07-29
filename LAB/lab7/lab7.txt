@@ -1,0 +1,2 @@
+All the write and read function are achieved by sys_write() and sys_read().
+

@@ -1,0 +1,9 @@
+The file system : FS.
+The main combination parts are three : 1.file view - abstract 2.control commands out in IO equipments 3.interrupts from IO equipment.
+In linux0.11 the screen and keyboard belong to character equipment, the disc belongs block equipment.
+They all are abstracted to file.
+The highest abstraction is direction, by it we can more conveniently find we want to find file(severl constructure search). So actually direction is a file in which there is filename and code which is connected with their FCB(inode). So the system init work will get the '/' into memory and some IO file which belong '/'. So when open() a filename, we can compare the filename string in pathname with the '/' direction data. When we find the name, we can get its FCB by the corresponsible code. If it still is a direction which is not the destination file or direction, we will by its FCB find its data and then compare the next name path segment with its data. We will continue the work until we find destination and return a code which can help system find its FCB.
+When we get the destination file, in FCB we can check its type depending on it to do command work.
+Like screen is cha_drv, we will write into char in memory by 'out' commands to print char.
+Like keyboard : When we don't use read to get keyboard content, it works by interrupt. In system interrupt code about keyboard has a table in which we store all kinds of functions to deal with all kinds of input.
+Like block: the mininx file system has conduct block,super block,inode block,data block;

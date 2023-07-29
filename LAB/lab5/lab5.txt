@@ -1,0 +1,72 @@
+Semaphore is used to describe volume of source. It can help achieve multi-process image in which it play a role as communicationer. 
+There is a semaphore x.
+When it is positive, it means that it have value(x) sources.
+When it is negative or zero, it means that it has owed value(x) sources.
+And there is two basic operation about semaphore variety.
+One is that increase it:
+	++x
+	if(x <= 0)
+	{
+		find_wait_queue();
+		schedule();
+	}
+
+Another is that drop it:
+	--x
+	if(x < 0)
+	{
+		push_wait_queue();
+		schedule();
+	}
+
+Of cources, you can add other things that is useful to it.
+/*******************************************************************************************************************************/
+Here it is a basic example to understand how it works.
+
+The sources is a segment buffer which can store characters.
+Its volume of one unit is SIZE.
+
+Producer process can produce characters and needs space to store them.
+Consumer process can consume characters and print them to screen.
+
+So how we distibute the buffer units to two kind of processes which is concurrent?
+
+First, we can use two semapthore to describe buffer. One is empty which describes how many empty units are. Another is full which describes how many full units are.
+The two varieties can have a good distribution of buffer. But we cannot forget interrupt influence. So we need a semaphore variety to protect process which is running.
+It usually is called mutex.
+It actually is, I think, that distribute CPU.
+
+Here is a contemplate:
+
+P()
+{
+	drop(mutex);
+	drop(empty);
+
+	//
+
+	increase(mutex);
+	increase(full);
+}
+
+C()
+{
+	drop(mutex);
+	drop(full);
+
+	//
+
+	increase(mutex);
+	increase(empty);
+}
+
+/***********************************************************************************************************/
+
+But the operation of semphore need to be protected from interrupt, too.
+There usually are 3 method.
+1:
+Bread Shop algorithm
+2:
+sti() and cli();
+3:
+Atomic instruction

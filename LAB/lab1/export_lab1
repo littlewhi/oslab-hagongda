@@ -1,0 +1,33 @@
+the debug of asm file is to use "./dbg-asm"
+the debug of c file is to use "./dbg-c" and split a new window to "./rungdb"
+
+the file's transportation:
+./mount-hdc
+So you can go in linux-0.11/usr/root/ to give file.
+But remember press the "sync" before leaving linux-0.11 system 
+to keep things.
+
+./run to start linux-0.11
+
+*************************************************************
+the note:
+As you know, in the beginning of computer work, the cpu cs and ip will be set automatically to an address which stores commands which move the bootsect.s in disk to memory and start to run it.
+At this time the loading sign is displayed, which is not an important function. The more essential job is to load setup.s.(Of course it has other functions such as read system and read other so on, but in  this lab1 we just need complete these two.)
+When bootsect.s work is done which mostly is reading, it will jump to setup.s(in memory) to run commands which doucment some hardware information, create some tables and other which helps system to work (help it to set up) well work.
+##############################################################
+the step1:
+rewrite a easy new bootesect.s which only has a function of displaying a line of words.
+You only need to write as the fomatt which is just one segment to display a string.
+But every time you print string you fistly get cursor place.
+The needing command:
+as86 -0 -a -o outname filename.s
+ld86 -0 -s -o outname filename.o
+dd bs=1 if=bootsect of=Imag skip=32 filename
+
+the step2:
+1.You can imitate the original file to write the reading setup part, but becase we don't completely achieve setup.s so we use less sectors space. So the SETUPLEN = 2 not =5. When loading is over, use 'jmp' command to jump to the address which the setup.s is gotten into.
+2.just like bootsect.s but the es = cs.
+3.read inforamtion
+	the 'lds' command is new one.
+4.print information
+	the 'rol' command is new one.

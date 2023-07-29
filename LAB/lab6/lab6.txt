@@ -1,0 +1,27 @@
+/************************************************************************************/
+variety i.
+ds:[address[i]] is a virtual memory address, we need to look for physical address.
+address[i] includes offset is in segment.
+Every process has one LDT(local description table) which is in GDT(global description table).
+So we need to find GDT and then find LDT.
+The GDT's segment selector is in gdtr register in which it store the address the GDT.
+The LDT's segment selector is in ldtr register in which it store the certain place in GDT.
+We can use the escape address about GDT base segment stored in ldtr register to locate the LDT description in GDT. We can use the description that is the physical address to find the LDT.
+So we come to LDT.
+There are description about all kinds of segments.
+But how to locate the data segment is in which one.
+The ds register is the data segment selector.
+In ds register we can get offset in LDT. 
+Now, we assume the offset is x.
+So in LDT[x], we can get the segment base address.
+Now, we have the virtual memory address.
+Next, we go to page area.
+In virtual memory, there is information about paging:
+	Page catalogue code, Page code, description information
+Page catalogue can find the memory pages catalogue table, the Page code can find the certain page in pages catalogue table, offset a can find the final phtysical address.
+/*************************************************************************************/
+
+So when we achieve the function to get a shared memory, we need first get one page memory in physical memory. And then we get one part of free virtual(linear) address from the current process. All we need to do is connect these two address and return back linear address to let process to use it.
+
+get_free_page();
+put_page();

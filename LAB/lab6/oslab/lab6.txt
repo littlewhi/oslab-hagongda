@@ -1,0 +1,20 @@
+variety i.
+ds:[address[i]] is a virtual memory address, we need to look for physical address.
+address[i] includes offset a which is in page.
+Every process has one LDT(local description table) which is in GDT(global description table).
+So we need to find GDT and then find LDT.
+The GDT's segment selector is in gdtr register in which it store the address the GDT.
+The LDT's segment selector is in ldtr register in which it store the certain place in GDT.
+We can use the escape address about GDT base segment stored in ldtr register to locate the LDT description in GDT. We can use the description that is the physical address to find the LDT.
+So we come to LDT.
+There are description about all kinds of segments.
+But how to locate the data segment is in which one.
+The ds register is the data segment selector.
+In ds register we can get offset in LDT. ( Actually, there is many information in ds register, but we don't overstate it)
+Now, we assume the offser is x.
+So in LDT[x], we can get the segment address.
+Now, we have the virtual memory address.
+Next, we go to page area.
+In virtual memory, there is information about paging:
+	Page catalogue code, Page code, description information
+Page catalogue can find the memory pages catalogue table, the Page code can find the certain page in pages catalogue table, offset a can find the final phtysical address. 

@@ -1,0 +1,18 @@
+Knowlegde: The Thread Switch
+	thread can be seen as a part of process, it is the stream of index without resource. So there are often some threads in one process to accelerate the function completiton. And its switch is easier than process's becasue it doesn't need to switch resouce information.
+	First: user thread:
+		It doesn't connect the kernel when it runs.	And its switch only rely on tow stacks.
+	Second: kernel thread:
+		It will use kernel function when it runs. So this causes that a kernel stack will be produced to store information and call resource. And then there is another kernel stack needs to be produced to help the thread switch in kernel. So the kernel thread switch needs two suits of stacks in which one is user's stack and another is kernel's stack. The kernel stack needs to storing the user stack information(ss,sp registers), which is vitally important to connecting with user stack.
+		There it is:	The five segments of kernel thread switch.
+			1.Call interrupt to come into kernel.
+			2.Solve the interrupt(call the schdule function)
+			3.swich TCB of PCB
+			4.swich kernel stack.
+			5.by the information in kernel stack go back to user.
+/***********************************************************************************************************************/
+This lab is mainly about changing fork system call causing switch.
+We stop fork tss work but keep the thread 0 tss until shut. (We add a kernelstack member to task_struct to keep the kernel stack address.) In the copy_process function, We renew the son process PCB. Push information into kernelsatck and at the top of kernelstack we add in a function including 'iret'.
+Because in fork (main part is in copy_process) the information in PCB and kernelstack is done. So in switch_to function we just switch PCB, KernelStack, change tss pointer about kernelstack and LDT(about memory work).
+
+Note : .globl can make the name being seen at the all places even in C code, but still 'extern type  name' or 'extern returntype name (parameter(s));'
